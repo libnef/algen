@@ -10,6 +10,7 @@
 <!-- A view for logging in -->
 <a href="{% url 'login' %}">Login</a><br>
 {% endif %}
+{% if user.is_authenticated %}
 pick an exam or make an advanced search
 <br>
 {% for exam in exams %}
@@ -23,6 +24,7 @@ pick an exam or make an advanced search
 <br>
 {% if user.username == "finbel" %}
 <a href="{% url 'populate' %}">populate</a>
+{% endif %}
 {% endif %}
 </body>
 </html>
