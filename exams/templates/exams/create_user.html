@@ -1,0 +1,10 @@
+<html>
+<head></head>
+<body>
+	<h1>New user</h1>
+	<form method="POST" class="post-form">{% csrf_token %}
+	    {{ form.as_p }}
+	    <button type="submit" class="save btn btn-default">Create new user account</button>
+	</form>
+</body>
+</html>

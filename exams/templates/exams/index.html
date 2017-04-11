@@ -1,0 +1,28 @@
+<html>
+<head></head>
+<body>
+<!-- These links should only be visable if the user is not authenticated -->
+<!-- A view for creating a new user -->
+{% if user.is_authenticated %}
+<a href="{% url 'logout' %}">Logout</a><br>
+{% else %}
+<a href="{% url 'create_user' %}">Create user</a><br>
+<!-- A view for logging in -->
+<a href="{% url 'login' %}">Login</a><br>
+{% endif %}
+pick an exam or make an advanced search
+<br>
+{% for exam in exams %}
+	{% if forloop.counter0|divisibleby:3 %} 
+	<br><br>
+	{% endif %}
+	<a href="{% url 'exam' date=exam.name %}" style="margin-left:20px;">{{exam.date|date:"m - d - y"}}</a>
+{% endfor %}
+<br><br>
+<a href="{% url 'advanced_search' %}">advanced search</a>
+<br>
+{% if user.username == "finbel" %}
+<a href="{% url 'populate' %}">populate</a>
+{% endif %}
+</body>
+</html>

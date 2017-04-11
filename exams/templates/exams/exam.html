@@ -1,0 +1,13 @@
+<html>
+<head></head>
+<body>
+Problems
+<br>
+{% for problem in problems %}
+	<br>
+	<a href="{% url 'problem' pk=problem.pk%}">{{problem.level}}{{problem.problem}}</a>
+{% endfor %}
+<br><br>
+
+</body>
+</html>

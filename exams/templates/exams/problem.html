@@ -1,0 +1,47 @@
+{% load staticfiles %}
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="{% static 'js/jquery.script.js' %}"></script>
+</head>
+<a href="{% url 'index'%}" style="float:left;">home</a><br>
+<body>
+{% for problem in problems %}
+	{% if forloop.counter0|divisibleby:12 %} 
+	<br>
+	{% endif %}
+	<a href="{% url 'problem' pk=problem.pk%}">{{problem.level}}{{problem.problem}}</a>
+{% endfor %}
+<br><br>
+<a href="{% url 'problem' pk=last_problem.pk%}" style="float:left;">last problem</a>
+<a href="{% url 'problem' pk=next_problem.pk%}" style="margin-left:200px;">next problem</a>
+<br>Problem: {{problem_name}}<br>
+Current score: {{current_score}}<br>
+Problem tags: 
+{% for tag in tags %}
+{{tag}}, 
+{% endfor %}<br><br>
+<img src="{% static problem_file %}"><br>
+<button class="show_it">Show solution</button>
+<button class="hide_it">Hide solution</button>
+<br>
+<div class="solution">
+{% for solution_file in solution_files %}
+	<br><img src="{% static solution_file %}"><hr>
+{% endfor %}
+</div>
+<br>
+<form method='post'>
+	{% csrf_token %}
+	{{ tag_form.as_p }}
+	<input type='submit' value='submit'>
+</form>
+<br>
+<form method='post'>
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type='submit' value='submit'>
+</form>
+
+</body>
+</html>
