@@ -11,10 +11,13 @@ class ProblemForm(forms.Form):
 		(3,'mistake'),
 		(4,'good'),
 		(5,'great'),)
+	YEAR_CHOICES = ((15,'15'),
+	 	(16,'16'),
+	 	(17,'17'),)
 	levels = forms.MultipleChoiceField(
 	 	choices=LEVEL_CHOICES, 
 	 	widget=forms.CheckboxSelectMultiple,)
-	lastest_exam_year = forms.ChoiceField([(15,'15'),(16,'16'),(17,'17')])
+	exam_years = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=YEAR_CHOICES)
 	include_assignments_of_score = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=DONE_CHOICE)
 	if(Tag.objects.all().count() != 0):
 		tags = Tag.objects.all().values('tag')
@@ -32,3 +35,10 @@ class ScoreForm(forms.Form):
 
 class TagForm(forms.Form):
 	add_a_tag_to_problem = forms.CharField()
+
+class SolutionPictureForm(forms.Form):
+    """Image upload form."""
+    image = forms.ImageField()
+
+class CommentForm(forms.Form):
+    write_a_comment = forms.CharField(widget=forms.Textarea(attrs={'rows':3, 'cols':40}))

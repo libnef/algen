@@ -15,7 +15,7 @@ class Problem(models.Model):
 	problem = models.CharField(max_length=2,default="")
 
 	def __str__(self):
-		return ' [' + self.exam.name + self.level + self.problem + '] '
+		return self.exam.name + "<br>" +  self.level + self.problem
 
 class Solution(models.Model):
 	name = models.CharField(max_length=4)
@@ -37,3 +37,15 @@ class Tag(models.Model):
 
 	def __str__(self):
 		return self.tag
+
+class SolutionPicture(models.Model):
+	problem = models.ForeignKey(Problem)
+	picture = models.ImageField(upload_to = 'exams/static/home_solutions/', default = 'pic_folder/None/no-img.jpg')
+
+class Comment(models.Model):
+	problem = models.ForeignKey(Problem)
+	author = models.ForeignKey('auth.User')
+	comment = models.TextField()
+
+	def __str__(self):
+		return "[" + str(self.problem) + " " + self.author.username + " " + self.comment + "]"

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Exam, Problem, Solution, Score, Tag
+from .models import Exam, Problem, Solution, Score, Tag, SolutionPicture, Comment
 from django.core import serializers
-from .forms import ProblemForm, ScoreForm, TagForm
+from .forms import ProblemForm, ScoreForm, TagForm, SolutionPictureForm, CommentForm
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import UserCreationForm
@@ -49,16 +49,22 @@ def problem(request, pk):
 	
 	problems = request.session['current_problems']
 	index_list = [ p['pk'] for p in problems ]
-	this = index_list.index(int(pk))
-	if (this == 0 ):
-		last_i = len(index_list)-1
+	if int(pk) in index_list: 
+		this = index_list.index(int(pk))
+		if (this == 0 ):
+			last_i = len(index_list)-1
+		else:
+			last_i = this-1
+		if (this == len(index_list)-1):
+			next_i = 0
+		else:
+			next_i = this+1
 	else:
-		last_i = this-1
-	if (this == len(index_list)-1):
-		next_i = 0
-	else:
-		next_i = this+1
+		next_i = last_i = 0
 	problem = Problem.objects.get(pk=pk)
+	last_problem = problems[last_i]
+	next_problem = problems[next_i]
+	problems = Problem.objects.filter(pk__in=index_list)
 
 	if request.method == 'POST':
 		form = ScoreForm(request.POST)
@@ -72,13 +78,18 @@ def problem(request, pk):
 			tag_to_add = tag_form.cleaned_data['add_a_tag_to_problem']
 			tag_to_add = tag_to_add.lower().strip()
 			tag,created = Tag.objects.get_or_create(problem=problem,tag=tag_to_add)
-			print(tag)
-			print(created)
 			tag.save()
 			return redirect('problem', pk=pk)
-
-	last_problem = problems[last_i]
-	next_problem = problems[next_i]
+		solution_form = SolutionPictureForm(request.POST, request.FILES)
+		if solution_form.is_valid():
+			pic,created = SolutionPicture.objects.get_or_create(problem=problem, picture=solution_form.cleaned_data['image'])
+			pic.save()
+			return redirect('problem', pk=pk)
+		comment_form = CommentForm(request.POST)
+		if comment_form.is_valid():
+			comment,created = Comment.objects.get_or_create(author=request.user,problem=problem,comment=comment_form.cleaned_data['write_a_comment'])
+			comment.save()
+			return redirect('problem', pk=pk)
 
 	current_score = Score.objects.get(problem=problem,user=request.user)
 	current_score = score_parser[current_score.score]
@@ -90,8 +101,14 @@ def problem(request, pk):
 	
 	form = ScoreForm()
 	tag_form = TagForm()
+	solution_form = SolutionPictureForm()
+	comment_form = CommentForm()
 	tags = Tag.objects.filter(problem=problem)
-	return render(request, 'exams/problem.html', {'tags':tags,'tag_form':tag_form,'current_score':current_score,'problem_name':problem_name,'form':form,'problem_file':problem_file,'solution_files':solution_files, 'problems':problems, 'last_problem':last_problem, 'next_problem':next_problem})
+	comments = Comment.objects.filter(problem=problem)
+	home_solutions = SolutionPicture.objects.filter(problem=problem).values('picture')
+	print(home_solutions)
+
+	return render(request, 'exams/problem.html', {'comments':comments, 'comment_form':comment_form,'home_solutions':home_solutions,'solution_form':solution_form, 'tags':tags,'tag_form':tag_form,'current_score':current_score,'problem_name':problem_name,'form':form,'problem_file':problem_file,'problem':problem,'solution_files':solution_files, 'problems':problems, 'last_problem':last_problem, 'next_problem':next_problem})
 
 
 def advanced_search(request):
@@ -99,28 +116,25 @@ def advanced_search(request):
 		form = ProblemForm(request.POST)
 		print(form.is_valid())
 		if form.is_valid():
+			request.session['form_data'] = form.cleaned_data
+			print(form.cleaned_data)
 			levels = form.cleaned_data.get('levels') #exam_year, done
 			tag = form.cleaned_data.get('tag')
-			print()
-			print(tag)
 			tagged_problems = Tag.objects.filter(tag=tag).values('problem')
 			if(len(tagged_problems)==0):
 				tagged_problems = Problem.objects.all().values('pk')
 				tagged_problems = [t['pk'] for t in tagged_problems]
 			else:
 				tagged_problems = [t['problem'] for t in tagged_problems]
-			print(tagged_problems)
-			print()
-			exam_year = form.cleaned_data.get('lastest_exam_year')
-			latest_date = datetime.datetime.strptime(exam_year, "%y")
+			years = form.cleaned_data.get('exam_years')
+			exams = Exam.objects.all().values('pk','name')
+			exam_pk = [ int(exam['pk']) for exam in exams if (exam['name'][4:6] in years)]
+			Exam.objects.filter(pk__in=exam_pk)
 			include_scores = form.cleaned_data.get('include_assignments_of_score')
 			scores = Score.objects.filter(user=request.user, score__in=include_scores).values('problem')
 			scores = [s['problem'] for s in scores]
-			print(levels)
-			print(latest_date)
-			print(scores)
 			pk_to_get = list(set(tagged_problems) & set(scores))
-			problems = Problem.objects.filter(level__in=levels,exam__date__gte=latest_date,pk__in=pk_to_get).order_by('exam__date').values('pk','level','problem')
+			problems = Problem.objects.filter(level__in=levels,exam__pk__in=exam_pk,pk__in=pk_to_get).order_by('exam__date').values('pk','level','problem')
 			request.session['current_problems'] = list(problems)
 			if (len(problems)!=0):
 				pk = problems[0]['pk']
@@ -129,10 +143,16 @@ def advanced_search(request):
 			done = form.cleaned_data.get('done')
 		else:
 			pk = -1
-		form = ProblemForm()
+		if 'form_data' in request.session:
+			form = ProblemForm(initial=request.session.get('form_data'))
+		else:
+			form = ProblemForm({'tag': 'no tag-filter', 'exam_years': ['15'], 'include_assignments_of_score': ['0'], 'levels': ['A']})
 		return redirect('problem', pk=pk)
 	else:
-		form = ProblemForm()
+		if 'form_data' in request.session:
+			form = ProblemForm(initial=request.session.get('form_data'))
+		else:
+			form = ProblemForm({'tag': 'no tag-filter', 'exam_years': ['15'], 'include_assignments_of_score': ['0'], 'levels': ['A']})
 		not_done = Score.objects.filter(user=request.user, score=0).count()
 		really_bad = Score.objects.filter(user=request.user, score=1).count()
 		bad = Score.objects.filter(user=request.user, score=2).count()

@@ -1,0 +1,314 @@
+*. {
+  box-sizing: content-box;
+}
+hr {
+  border-top: 1px solid #b5a8a1 !important;
+}
+
+.submit-button {
+  box-shadow: rgb(242, 250, 220) 0px 0px 38px -3px inset; 
+  background: linear-gradient(rgb(219, 230, 196) 5%, rgb(155, 168, 146) 100%) rgb(219, 230, 196); 
+  border-radius: 12px; 
+  border: 1px solid rgb(178, 184, 173); 
+  display: inline-block; 
+  cursor: pointer; 
+  color: rgb(117, 125, 111); 
+  font-family: Arial; 
+  font-size: 15px; 
+  font-weight: bold; 
+  padding: 8px; 
+  text-decoration-line: none; 
+  text-decoration-style: initial; 
+  text-decoration-color: initial; 
+  text-shadow: rgb(206, 217, 191) 0px 1px 0px;
+}
+
+.container-outer-page {
+  display: flex;
+  background-color: #1e130c
+}
+
+.container-inner-page-col-1 {
+  display: flex;
+  flex-direction: column;
+  order: 1;
+  background-color: #efecea;
+  flex-basis: 1;
+  flex-grow: 1;
+  min-width: 400px;
+}
+
+.container-inner-page-col-2 {
+  display: flex;
+  flex-direction: column;
+  order: 2;
+  flex-basis: 3;
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0;
+  right: 0;
+  background-color: #111; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+
+}
+
+/* Position and style the close button (top right corner) */
+
+
+.closebtn {
+  color:#9a8478; 
+  position: absolute;
+  text-decoration: none !important;
+  align-self: center;
+  top: 0px;
+  right: 25px;
+  font-size: 45px;
+  margin-left: 50px;
+  margin-top: 0px;  
+}
+
+.closebtn:hover {
+  color:#b29d92; 
+}
+
+.closebtn:focus {
+  color:#b29d92; 
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .container-inner-page-col-2 {padding-top: 15px;}
+    .column-2-element .column-2-element {font-size: 18px;}
+}
+
+.column-2-element {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 0.9em;
+  color: #818181;
+  display: block;
+  transition: 0.3s
+}
+
+.container-header {
+  display: flex;
+  background-color: #1e130c;
+}
+
+.container-home {
+  display: flex;
+  order: 1;
+  flex-basis: 5%;
+  /* following code aligns center horizontally*/
+  align-content: center;
+  justify-content: center;
+}
+
+.home {
+  font-size: 200%;
+  color:#9a8478; 
+  position: absolute;
+  text-decoration: none !important;
+  align-self: center;
+}
+
+.home a:hover {
+  color:#b29d92; 
+}
+
+.home a:focus {
+  color:#b29d92; 
+}
+
+.container-problem-list {
+  display: flex;
+  margin-left: 20px;
+  flex-wrap: wrap;
+  order: 2;
+  flex-grow: 1;
+  color: #DAD6D4;
+  font-family: "Arial Narrow", Arial, sans-serif;
+  align-content: center;
+}
+
+.container-problem-list p{
+  font-family: "Arial Narrow", Arial, sans-serif;
+  align-self: center;
+  font-weight: bold; 
+}
+
+.container-open-sidebar {
+  display: flex;
+  order: 3;
+  flex-basis: 10%;
+  justify-content: center;
+  align-content: center;
+}
+
+.open-sidebar a {
+  font-size: 200%;
+  color:#9a8478; 
+  text-decoration: none !important;
+  align-self: center;
+}
+
+.open-sidebar a:hover {
+  color:#b29d92; 
+}
+
+.open-sidebar a:focus {
+  color:#b29d92; 
+}
+
+
+
+.sidebar-close {
+  align-self: right;
+  font-size: 150%;
+}
+
+.container-last-next {
+  display: flex;
+  justify-content: space-between;
+  background: linear-gradient(to right, #efecea , #1E130C 20%);
+}  
+
+.last {
+  margin-left: 5px;
+  color: #49392e;
+  text-decoration: none !important;
+}
+
+.last:hover {
+  color: #1E130C;
+}
+
+.next {
+  margin-right: 5px;
+  color:#9a8478; 
+  text-decoration: none !important;
+}
+
+.next:hover {
+  color:#b29d92; 
+}
+
+.container-problem-info {
+  display: flex;
+  font-family: "Arial Narrow", Arial, sans-serif;
+  font-size: 15px; 
+  background-color: #B0ABA7;
+  color: #332922;
+  padding-left: 10px;
+  justify-content: flex-start;
+}
+
+.container-problem-info-text {
+  display: flex;
+  flex-direction: column;
+  order: 1;
+  flex-basis: 30%;
+}
+
+.problem-info-score {
+  order: 2;
+  padding-left: 5px;
+  margin-left: 5px;
+  background-color: #1e130c;
+  color: #B0ABA7;
+  border-style: solid;
+  border-color: #1e130c #1e130c #1e130c #5D544F;
+  flex-basis:100%;
+}
+
+.container-problem {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+img {
+  max-width:100%;
+}
+
+a.next-last-btn{
+  background-color: blue;
+  border-radius: 50px;
+}
+
+a.btn.btn-info{
+  margin: 0.5%; 
+  padding: 10px 3px 10px  3px;
+  border-radius: 50px;
+  font-size: 75%;
+  background: linear-gradient(0deg, #1e130c 1%, #504037);
+  border-color: #1e130c;
+  font-family: "Arial Narrow", Arial, sans-serif;
+  line-height: 0.99em;
+  color: #DAD6D4;
+}
+
+/* Style the tab */
+div.tab {
+  display:flex;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+div.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+div.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+div.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.tabcontent {
+    -webkit-animation: fadeEffect 1s;
+    animation: fadeEffect 1s; /* Fading effect takes 1 second */
+}
+
+@-webkit-keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.hide{
+  display: none !important;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+    transition: margin-right .5s;;
+}
