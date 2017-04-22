@@ -86,7 +86,6 @@
 
 			<div id="Solution" class="tabcontent">
 				{% for solution_file in solution_files %}
-					 	{{solution_file}}
 					<img src="{% static solution_file %}"><hr>
 				{% endfor %}
 			</div>
@@ -142,11 +141,15 @@
 		</div>
 		<div class="column-2-element">
 			<hr>
+			{% if user.is_authenticated %}
 			<form method='post'>
 				{% csrf_token %}
 				{{ form.as_p }}
 				<input class="submit-button" type='submit' value='submit'>
 			</form>
+			{% else %}
+				Log in to rate your solution.
+			{% endif %}
 		</div>
 		<div class="column-2-element">
 			<hr>
