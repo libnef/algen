@@ -4,6 +4,7 @@ from django.core import serializers
 from .forms import ProblemForm, ScoreForm, TagForm, SolutionPictureForm, CommentForm
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import glob, datetime
@@ -44,12 +45,22 @@ def exam(request,date):
 	return redirect('problem', pk=pk)	
 
 def problem(request, pk):
+	
 	if(pk=='-1'):
 		return render(request, 'exams/no_hits.html', {})
 	
-	problems = request.session['current_problems']
+	problem = Problem.objects.get(pk=pk)
+	if 'current_problems' in request.session:
+		problems = request.session['current_problems']
+	else:
+		print(problem)
+		problems1 = Problem.objects.filter(pk=problem.pk)
+		problems = problems1.values('pk','level','problem')
+		print(problems)
+
 	index_list = [ p['pk'] for p in problems ]
-	if int(pk) in index_list: 
+	print(index_list)
+	if (int(pk) in index_list) and (len(index_list)>1): 
 		this = index_list.index(int(pk))
 		if (this == 0 ):
 			last_i = len(index_list)-1
@@ -61,7 +72,6 @@ def problem(request, pk):
 			next_i = this+1
 	else:
 		next_i = last_i = 0
-	problem = Problem.objects.get(pk=pk)
 	last_problem = problems[last_i]
 	next_problem = problems[next_i]
 	problems = Problem.objects.filter(pk__in=index_list)
@@ -90,9 +100,11 @@ def problem(request, pk):
 			comment,created = Comment.objects.get_or_create(author=request.user,problem=problem,comment=comment_form.cleaned_data['write_a_comment'])
 			comment.save()
 			return redirect('problem', pk=pk)
-
-	current_score = Score.objects.get(problem=problem,user=request.user)
-	current_score = score_parser[current_score.score]
+	if request.user.is_authenticated():
+		current_score = Score.objects.get(problem=problem,user=request.user)
+		current_score = score_parser[current_score.score]
+	else:
+		current_score = 'not logged in'
 	problem_string = problem.exam.name + problem.level + problem.problem
 	problem_name = problem.level + problem.problem
 	problem_file = "problems/" + problem_string + ".png"
@@ -110,7 +122,7 @@ def problem(request, pk):
 
 	return render(request, 'exams/problem.html', {'comments':comments, 'comment_form':comment_form,'home_solutions':home_solutions,'solution_form':solution_form, 'tags':tags,'tag_form':tag_form,'current_score':current_score,'problem_name':problem_name,'form':form,'problem_file':problem_file,'problem':problem,'solution_files':solution_files, 'problems':problems, 'last_problem':last_problem, 'next_problem':next_problem})
 
-
+@login_required
 def advanced_search(request):
 	if request.method == 'POST':
 		form = ProblemForm(request.POST)
@@ -165,9 +177,14 @@ def advanced_search(request):
 
 # Create your views here.
 def populate(request):
-	Solution.objects.all().delete()
+	Exam.objects.all().delete()
 	Problem.objects.all().delete()
+	Tag.objects.all().delete()	
 	Solution.objects.all().delete()	
+	SolutionPicture.objects.all().delete()
+	Comment.objects.all().delete()	
+	Score.objects.all().delete()		
+
 	problems_dir = "./exams/static/problems/"
 	cut = len(problems_dir)
 	files = [ p[cut:] for p in glob.iglob(problems_dir+'*.png')]

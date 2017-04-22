@@ -15,7 +15,7 @@ class Problem(models.Model):
 	problem = models.CharField(max_length=2,default="")
 
 	def __str__(self):
-		return self.exam.name + "<br>" +  self.level + self.problem
+		return self.exam.name +  self.level + self.problem
 
 class Solution(models.Model):
 	name = models.CharField(max_length=4)

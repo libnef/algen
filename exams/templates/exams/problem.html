@@ -66,7 +66,7 @@
 				</div>
 			</div>
 			<div class="problem-info-score">
-				Current score: <br>{{current_score}}
+				<div style="font-weight: bold;">Current score:</div>{{current_score}}
 			</div>
 		</div> <!-- end of problem info -->
 		
@@ -86,6 +86,7 @@
 
 			<div id="Solution" class="tabcontent">
 				{% for solution_file in solution_files %}
+					 	{{solution_file}}
 					<img src="{% static solution_file %}"><hr>
 				{% endfor %}
 			</div>
@@ -93,9 +94,10 @@
 			<div id="Student-solutions" class="tabcontent">
 				Use the side bar (top right corner) to add your solution.<hr/>
 				{% if home_solutions %}
-					this
 					{% for home_solution in home_solutions %}
-						<img src="{% static home_solution.picture %}"><hr/>
+					 Solution {{forloop.counter }}<br>
+						<img src='{% static home_solution.picture|slice:"13:" %}'><hr/>
+					 
 					{% endfor %}
 				{% else %}
 					No solutions for this problem made yet

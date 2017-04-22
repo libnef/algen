@@ -1,9 +1,15 @@
+{% load staticfiles %}
 <html>
+
+	<head>
+		    <meta name="viewport" content="width=device-width, initial-scale=1">
+	        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+	</head>
 <body>
 {% if form.errors %}
-	<h1>You're Tearing Me Apart, Lisa! Please try again.</h1>
+	<p>Please try again.</p>
 {% else %}
-	<h1>Puny mortal! One does not simply look at posts unless logged in.</h1>
+	<p>You need to log in</p>
 {% endif %}
 
 <form method="post" action="{% url 'login' %}?next={{ request.GET.next }}">

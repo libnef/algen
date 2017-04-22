@@ -1,8 +1,16 @@
 *. {
   box-sizing: content-box;
+  background-color: #1e130c;  
+}
+
 }
 hr {
   border-top: 1px solid #b5a8a1 !important;
+}
+
+body {
+  box-sizing: content-box;
+  background-color: #1e130c !important;  
 }
 
 .submit-button {
@@ -12,7 +20,7 @@ hr {
   border: 1px solid rgb(178, 184, 173); 
   display: inline-block; 
   cursor: pointer; 
-  color: rgb(117, 125, 111); 
+  color: #1e130c !important;
   font-family: Arial; 
   font-size: 15px; 
   font-weight: bold; 

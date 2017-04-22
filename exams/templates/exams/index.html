@@ -1,30 +1,40 @@
+{% load staticfiles %}
 <html>
-<head></head>
-<body>
-<!-- These links should only be visable if the user is not authenticated -->
-<!-- A view for creating a new user -->
-{% if user.is_authenticated %}
-<a href="{% url 'logout' %}">Logout</a><br>
-{% else %}
-<a href="{% url 'create_user' %}">Create user</a><br>
-<!-- A view for logging in -->
-<a href="{% url 'login' %}">Login</a><br>
-{% endif %}
-{% if user.is_authenticated %}
-pick an exam or make an advanced search
-<br>
-{% for exam in exams %}
-	{% if forloop.counter0|divisibleby:3 %} 
-	<br><br>
-	{% endif %}
-	<a href="{% url 'exam' date=exam.name %}" style="margin-left:20px;">{{exam.date|date:"m - d - y"}}</a>
-{% endfor %}
-<br><br>
-<a href="{% url 'advanced_search' %}">advanced search</a>
-<br>
-{% if user.username == "finbel" %}
-<a href="{% url 'populate' %}">populate</a>
-{% endif %}
-{% endif %}
-</body>
+
+	<head>
+			
+		    <meta name="viewport" content="width=device-width, initial-scale=1">
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	        <link rel="stylesheet" href="{% static 'css/index.css' %}">
+	</head>
+
+	<body>
+		<!-- These links should only be visable if the user is not authenticated -->
+		<!-- A view for creating a new user -->
+		<p>A database of previous exams for SF1524, welcome {{ user.username}}.</p>
+		{% if user.is_authenticated == False %}
+			<a href="{% url 'create_user' %}">Create user</a>
+			<!-- A view for logging in -->
+			<p>or</p>
+			<a href="{% url 'login' %}">Login</a>
+		{% else %}
+			<a href="{% url 'logout' %}" style="float: right;padding-right:20px;">Logout</a>
+			<p><br>Pick an exam or search for a set of problems</p>
+			<div class="exam-container">
+			{% for exam in exams %}
+				<!-- {% if forloop.counter0|divisibleby:3 %} 
+					<br>
+				{% endif %} -->
+				<a href="{% url 'exam' date=exam.name %}" style="margin-left:20px;">{{exam.date|date:"m - d - y"}}</a>
+			{% endfor %}
+			</div>
+			<a href="{% url 'advanced_search' %}">			
+			<hr>
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><span class="glyphicon glyphicon-search"></span></a>
+			<br>
+			{% if user.username == "Finbel" %}
+				<a href="{% url 'populate' %}">populate</a>
+			{% endif %}
+		{% endif %}
+		</div>
 </html>
