@@ -104,12 +104,17 @@
 				{% endif %}
 			</div>
 			<div id="Comments" class="tabcontent">
+				{% if user.is_authenticated %}
 				<form method='post'>
 					{% csrf_token %}
 					Write a comment:<br>
 					{{ comment_form.write_a_comment }}
 					<input class="submit-button" type='submit' value='submit'>
-				</form><hr/>
+				</form>
+				{% else %}
+					Log in to make a comment
+				{% endif %}
+				<hr/>
 				{% if comments %}
 					{% for comment in comments %}
 						<div style="font-weight: bold;">{{comment.author}}</div>
