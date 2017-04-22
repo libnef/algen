@@ -14,7 +14,8 @@ score_parser = ['not done','really bad','bad','mistake','good','great']
 # Create your views here.
 def index(request):
 	exams = Exam.objects.all()
-	return render(request, 'exams/index.html', {'exams':exams})
+	current_scores = get_current_scores(request.user)
+	return render(request, 'exams/index.html', {'current_scores':current_scores, 'exams':exams})
 
 def create_user(request):
     if request.method == "POST":
@@ -158,22 +159,27 @@ def advanced_search(request):
 		if 'form_data' in request.session:
 			form = ProblemForm(initial=request.session.get('form_data'))
 		else:
-			form = ProblemForm({'tag': 'no tag-filter', 'exam_years': ['15'], 'include_assignments_of_score': ['0'], 'levels': ['A']})
+			form = ProblemForm({'tag': 'no tag-filter', 'exam_years': ['15','16','17'], 'include_assignments_of_score': ['0'], 'levels': ['A']})
 		return redirect('problem', pk=pk)
 	else:
 		if 'form_data' in request.session:
 			form = ProblemForm(initial=request.session.get('form_data'))
 		else:
 			form = ProblemForm({'tag': 'no tag-filter', 'exam_years': ['15'], 'include_assignments_of_score': ['0'], 'levels': ['A']})
-		not_done = Score.objects.filter(user=request.user, score=0).count()
-		really_bad = Score.objects.filter(user=request.user, score=1).count()
-		bad = Score.objects.filter(user=request.user, score=2).count()
-		mistake = Score.objects.filter(user=request.user, score=3).count()
-		good = Score.objects.filter(user=request.user, score=4).count()
-		great = Score.objects.filter(user=request.user, score=5).count()
-		current_scores = [('not done',not_done),('really bad',really_bad),('bad',bad),('mistake',mistake),('good',good),('great',great)]
-
+	current_scores = get_current_scores(request.user)
 	return render(request, 'exams/search.html', {'form':form,'current_scores':current_scores})	
+
+def get_current_scores(user):
+	if user.is_authenticated():
+		not_done = Score.objects.filter(user=user, score=0).count()
+		really_bad = Score.objects.filter(user=user, score=1).count()
+		bad = Score.objects.filter(user=user, score=2).count()
+		mistake = Score.objects.filter(user=user, score=3).count()
+		good = Score.objects.filter(user=user, score=4).count()
+		great = Score.objects.filter(user=user, score=5).count()
+		return [('not done',not_done),('really bad',really_bad),('bad',bad),('mistake',mistake),('good',good),('great',great)]
+	else:
+		return []
 
 # Create your views here.
 def populate(request):
@@ -194,7 +200,6 @@ def populate(request):
 	exam = ""
 	problem = ""
 	for file in files:
-
 		# check if new exam
 		if file[:6]!=exam:
 			exam = file[:6]
@@ -220,4 +225,10 @@ def populate(request):
 				problem=prb)
 			solution.save()
 			print("\t\tsolution: " + file[10:-4])
+	users = User.objects.all()
+	problems = Problem.objects.all()
+	for user in users:
+		for problem in problems:
+			score = Score(user=new_user,problem=problem,score=0)
+			score.save()
 	return redirect(index)

@@ -10,16 +10,26 @@
 
 	<body>
 		<!-- These links should only be visable if the user is not authenticated -->
-		<!-- A view for creating a new user -->
-		<p>A database of previous exams for SF1524, welcome {{ user.username}}.</p>
+		<p>A database of previous exams for SF1524
 		{% if user.is_authenticated == False %}
-			<a href="{% url 'create_user' %}">Create user</a>
+			</p><p>Pick an exam below</p><hr>
+			<div class="exam-container">
+			{% for exam in exams %}
+				<a href="{% url 'exam' date=exam.name %}" style="margin-left:20px;">{{exam.date|date:"m - d - y"}}</a>
+			{% endfor %}
+			</div>		
+			<hr>
+			<p>or create a user to track progress and search for specific sets of problems</p>
 			<!-- A view for logging in -->
-			<p>or</p>
+			<a href="{% url 'create_user' %}">Create user</a><br>
 			<a href="{% url 'login' %}">Login</a>
 		{% else %}
+			, welcome {{ user.username}}.</p>
 			<a href="{% url 'logout' %}" style="float: right;padding-right:20px;">Logout</a>
-			<p><br>Pick an exam or search for a set of problems</p>
+			<p><br>Search for a set of problems or pick an exam</p>
+			<a href="{% url 'advanced_search' %}">
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><span class="glyphicon glyphicon-search"></span></a>
+			<hr>
 			<div class="exam-container">
 			{% for exam in exams %}
 				<!-- {% if forloop.counter0|divisibleby:3 %} 
@@ -27,14 +37,22 @@
 				{% endif %} -->
 				<a href="{% url 'exam' date=exam.name %}" style="margin-left:20px;">{{exam.date|date:"m - d - y"}}</a>
 			{% endfor %}
-			</div>
-			<a href="{% url 'advanced_search' %}">			
+			</div>			
 			<hr>
-			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><span class="glyphicon glyphicon-search"></span></a>
-			<br>
+			<p>Your current scores:</p>
+			<table cellpadding="0" cellspacing="0" border="0">
+			{% for score,value in current_scores %}
+				<tr>
+					<td width="80%">{{score}}</td>
+					<td width="80%">{{value}}</td>
+				</tr>
+			{% endfor %}
+			</table>
+
+<!-- 			<br><br></p>
 			{% if user.username == "Finbel" %}
 				<a href="{% url 'populate' %}">populate</a>
-			{% endif %}
+			{% endif %} -->
 		{% endif %}
 		</div>
 </html>

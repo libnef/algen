@@ -51,7 +51,7 @@ body {
   flex-direction: column;
   order: 2;
   flex-basis: 3;
-  height: 100%; /* 100% Full-height */
+  height: 90%; /* 100% Full-height */
   width: 0; /* 0 width - change this with JavaScript */
   position: fixed; /* Stay in place */
   z-index: 1; /* Stay on top */
@@ -59,7 +59,7 @@ body {
   right: 0;
   background-color: #111; /* Black*/
   overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 60px; /* Place content 60px from the top */
+  padding-top: 60px;/* Place content 60px from the top */
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 
 }
@@ -69,14 +69,9 @@ body {
 
 .closebtn {
   color:#9a8478; 
-  position: absolute;
   text-decoration: none !important;
-  align-self: center;
-  top: 0px;
-  right: 25px;
   font-size: 45px;
-  margin-left: 50px;
-  margin-top: 0px;  
+  padding-left: 25px;
 }
 
 .closebtn:hover {
@@ -88,8 +83,11 @@ body {
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-    .container-inner-page-col-2 {padding-top: 15px;}
+@media screen and (min-height: 450px) {
+    .container-inner-page-col-2 {
+      padding-top: 15px;
+      height: 80%;
+    }
     .column-2-element .column-2-element {font-size: 18px;}
 }
 
