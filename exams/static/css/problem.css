@@ -1,6 +1,6 @@
 *. {
   box-sizing: content-box;
-  background-color: #1e130c;  
+  background-color: #1e130c;
 }
 
 }
@@ -10,24 +10,24 @@ hr {
 
 body {
   box-sizing: content-box;
-  background-color: #1e130c !important;  
+  background-color: #1e130c !important;
 }
 
 .submit-button {
-  box-shadow: rgb(242, 250, 220) 0px 0px 38px -3px inset; 
-  background: linear-gradient(rgb(219, 230, 196) 5%, rgb(155, 168, 146) 100%) rgb(219, 230, 196); 
-  border-radius: 12px; 
-  border: 1px solid rgb(178, 184, 173); 
-  display: inline-block; 
-  cursor: pointer; 
+  box-shadow: rgb(242, 250, 220) 0px 0px 38px -3px inset;
+  background: linear-gradient(rgb(219, 230, 196) 5%, rgb(155, 168, 146) 100%) rgb(219, 230, 196);
+  border-radius: 12px;
+  border: 1px solid rgb(178, 184, 173);
+  display: inline-block;
+  cursor: pointer;
   color: #1e130c !important;
-  font-family: Arial; 
-  font-size: 15px; 
-  font-weight: bold; 
-  padding: 8px; 
-  text-decoration-line: none; 
-  text-decoration-style: initial; 
-  text-decoration-color: initial; 
+  font-family: Arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 8px;
+  text-decoration-line: none;
+  text-decoration-style: initial;
+  text-decoration-color: initial;
   text-shadow: rgb(206, 217, 191) 0px 1px 0px;
 }
 
@@ -68,18 +68,18 @@ body {
 
 
 .closebtn {
-  color:#9a8478; 
+  color:#9a8478;
   text-decoration: none !important;
   font-size: 45px;
   padding-left: 25px;
 }
 
 .closebtn:hover {
-  color:#b29d92; 
+  color:#b29d92;
 }
 
 .closebtn:focus {
-  color:#b29d92; 
+  color:#b29d92;
 }
 
 .column-2-element {
@@ -106,19 +106,18 @@ body {
 }
 
 .home {
-  font-size: 180%;
-  color:#9a8478; 
-  position: absolute;
+  font-size: 200%;
+  color:#9a8478;
   text-decoration: none !important;
   align-self: center;
 }
 
 .home a:hover {
-  color:#b29d92; 
+  color:#b29d92;
 }
 
 .home a:focus {
-  color:#b29d92; 
+  color:#b29d92;
 }
 
 .container-problem-list {
@@ -135,7 +134,7 @@ body {
 .container-problem-list p{
   font-family: "Arial Narrow", Arial, sans-serif;
   align-self: center;
-  font-weight: bold; 
+  font-weight: bold;
 }
 
 .container-open-sidebar {
@@ -148,17 +147,17 @@ body {
 
 .open-sidebar a {
   font-size: 200%;
-  color:#9a8478; 
+  color:#9a8478;
   text-decoration: none !important;
   align-self: center;
 }
 
 .open-sidebar a:hover {
-  color:#b29d92; 
+  color:#b29d92;
 }
 
 .open-sidebar a:focus {
-  color:#b29d92; 
+  color:#b29d92;
 }
 
 
@@ -172,7 +171,7 @@ body {
   display: flex;
   justify-content: space-between;
   background: linear-gradient(to right, #efecea , #1E130C 20%);
-}  
+}
 
 .last {
   margin-left: 5px;
@@ -186,18 +185,18 @@ body {
 
 .next {
   margin-right: 5px;
-  color:#9a8478; 
+  color:#9a8478;
   text-decoration: none !important;
 }
 
 .next:hover {
-  color:#b29d92; 
+  color:#b29d92;
 }
 
 .container-problem-info {
   display: flex;
   font-family: "Arial Narrow", Arial, sans-serif;
-  font-size: 15px; 
+  font-size: 15px;
   background-color: #B0ABA7;
   color: #332922;
   padding-left: 10px;
@@ -238,7 +237,7 @@ a.next-last-btn{
 }
 
 a.btn.btn-info{
-  margin: 0.5%; 
+  margin: 0.5%;
   padding: 10px 3px 10px  3px;
   border-radius: 50px;
   font-size: 75%;
