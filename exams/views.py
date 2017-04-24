@@ -46,7 +46,6 @@ def exam(request,date):
 	return redirect('problem', pk=pk)	
 
 def problem(request, pk):
-	
 	if(pk=='-1'):
 		return render(request, 'exams/no_hits.html', {})
 	
