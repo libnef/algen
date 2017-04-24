@@ -40,7 +40,7 @@ class Tag(models.Model):
 
 class SolutionPicture(models.Model):
 	problem = models.ForeignKey(Problem)
-	picture = models.ImageField(upload_to = 'exams/static/home_solutions/', default = 'pic_folder/None/no-img.jpg')
+	picture = models.ImageField(upload_to = 'home_solutions/', default = 'pic_folder/None/no-img.jpg')
 
 class Comment(models.Model):
 	problem = models.ForeignKey(Problem)

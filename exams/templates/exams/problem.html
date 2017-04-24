@@ -95,8 +95,7 @@
 				{% if home_solutions %}
 					{% for home_solution in home_solutions %}
 					 Solution {{forloop.counter }}<br>
-						<img src='{% static home_solution.picture|slice:"13:" %}'><hr/>
-					 
+						<img src='{{MEDIA_URL}}{{home_solution.picture}}'><hr/>
 					{% endfor %}
 				{% else %}
 					No solutions for this problem made yet
