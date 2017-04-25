@@ -309,6 +309,14 @@ div.tab button.active {
     transition: margin-right .5s;;
 }
 
+.solution_file-unclicked {
+  width: 200px;
+}
+
+.solution_file-clicked {
+  width: 100%;
+}
+
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (min-height: 700px) {
     .container-inner-page-col-2 {
@@ -320,4 +328,9 @@ div.tab button.active {
     .home {
         font-size: 180%;
     }
+
+    .solution_file {
+      width: 300px;
+    }
 }
+

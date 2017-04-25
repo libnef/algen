@@ -94,8 +94,12 @@
 				Use the side bar (top right corner) to add your solution.<hr/>
 				{% if home_solutions %}
 					{% for home_solution in home_solutions %}
-					 Solution {{forloop.counter }}<br>
-						<img src='{{MEDIA_URL}}{{home_solution.picture}}'><hr/>
+					 Solution {{forloop.counter }} 
+					 <div class="enlarge-text"></div><br>
+						<div class="solution_file solution_file-unclicked">
+							<img src='{{MEDIA_URL}}{{home_solution.picture}}'>
+						</div>
+						<hr/>
 					{% endfor %}
 				{% else %}
 					No solutions for this problem made yet
@@ -165,6 +169,7 @@
 </html>
 
 <script>
+
 if ( $(window).width() > 739) {      
   //Add your javascript for large screens here 
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
@@ -179,7 +184,7 @@ if ( $(window).width() > 739) {
 	    document.getElementById("main").style.marginRight = "0";
 	}
 
-
+	$('.enlarge-text').text('(click to enlarge)');
 } else {
   //Add your javascript for small screens here 
 	/* Set the width of the side navigation to 250px */
@@ -215,4 +220,8 @@ function openTab(evt, tabName) {
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
   }
+
+$('.solution_file').click(function() {
+	$(this).toggleClass('solution_file-unclicked solution_file-clicked');
+});
 </script>
