@@ -11,11 +11,22 @@ import glob, datetime
 
 score_parser = ['not done','really bad','bad','mistake','good','great']
 
+def request_to_problem_list(request_problems):
+	index_list = [ p['pk'] for p in request_problems ]	
+	problems = Problem.objects.filter(pk__in=index_list)
+	return problems
+
 # Create your views here.
 def index(request):
+	if 'current_pk' not in request.session:
+		current_pk = -1
+	if 'current_problems' in request.session:
+		problems = request_to_problem_list(request.session['current_problems'])
+	else:
+		problems = []
 	exams = Exam.objects.all()
 	current_scores = get_current_scores(request.user)
-	return render(request, 'exams/index.html', {'current_scores':current_scores, 'exams':exams})
+	return render(request, 'exams/index2.html', {'problems':problems,'current_scores':current_scores, 'exams':exams})
 
 def create_user(request):
     if request.method == "POST":
@@ -48,7 +59,9 @@ def exam(request,date):
 def problem(request, pk):
 	if(pk=='-1'):
 		return render(request, 'exams/no_hits.html', {})
-	
+	else:
+		request.session['current_pk'] = pk
+
 	problem = Problem.objects.get(pk=pk)
 	if 'current_problems' in request.session:
 		problems = request.session['current_problems']
@@ -120,10 +133,16 @@ def problem(request, pk):
 	home_solutions = SolutionPicture.objects.filter(problem=problem).values('picture')
 	print(home_solutions)
 
-	return render(request, 'exams/problem.html', {'comments':comments, 'comment_form':comment_form,'home_solutions':home_solutions,'solution_form':solution_form, 'tags':tags,'tag_form':tag_form,'current_score':current_score,'problem_name':problem_name,'form':form,'problem_file':problem_file,'problem':problem,'solution_files':solution_files, 'problems':problems, 'last_problem':last_problem, 'next_problem':next_problem})
+	return render(request, 'exams/problem2.html', {'comments':comments, 'comment_form':comment_form,'home_solutions':home_solutions,'solution_form':solution_form, 'tags':tags,'tag_form':tag_form,'current_score':current_score,'problem_name':problem_name,'form':form,'problem_file':problem_file,'problem':problem,'solution_files':solution_files, 'problems':problems, 'last_problem':last_problem, 'next_problem':next_problem})
 
-@login_required
 def advanced_search(request):
+	if 'current_pk' not in request.session:
+		current_pk = -1
+	if 'current_problems' in request.session:
+		problems = request_to_problem_list(request.session['current_problems'])
+	else:
+		problems = []
+	
 	if request.method == 'POST':
 		form = ProblemForm(request.POST)
 		print(form.is_valid())
@@ -142,10 +161,14 @@ def advanced_search(request):
 			exams = Exam.objects.all().values('pk','name')
 			exam_pk = [ int(exam['pk']) for exam in exams if (exam['name'][4:6] in years)]
 			Exam.objects.filter(pk__in=exam_pk)
-			include_scores = form.cleaned_data.get('include_assignments_of_score')
-			scores = Score.objects.filter(user=request.user, score__in=include_scores).values('problem')
-			scores = [s['problem'] for s in scores]
-			pk_to_get = list(set(tagged_problems) & set(scores))
+
+			if request.user.is_authenticated():
+				include_scores = form.cleaned_data.get('include_assignments_of_score')
+				scores = Score.objects.filter(user=request.user, score__in=include_scores).values('problem')
+				scores = [s['problem'] for s in scores]
+				pk_to_get = list(set(tagged_problems) & set(scores))
+			else:
+				pk_to_get = list(set(tagged_problems))
 			problems = Problem.objects.filter(level__in=levels,exam__pk__in=exam_pk,pk__in=pk_to_get).order_by('exam__date').values('pk','level','problem')
 			request.session['current_problems'] = list(problems)
 			if (len(problems)!=0):
@@ -166,21 +189,31 @@ def advanced_search(request):
 		else:
 			form = ProblemForm({'tag': 'no tag-filter', 'exam_years': ['15'], 'include_assignments_of_score': ['0'], 'levels': ['A']})
 	current_scores = get_current_scores(request.user)
-	return render(request, 'exams/search.html', {'form':form,'current_scores':current_scores})	
+	return render(request, 'exams/search2.html', {'problems':problems,'form':form,'current_scores':current_scores})	
 
+# returns a 6x3 matrix of scores for every level
 def get_current_scores(user):
+
+	rows = [('not done',0),('very bad',1),('bad',2),('mistake',3),('good',4),('very good',5)]
+	columns = ['A','B','C']
+	scores = []
 	if user.is_authenticated():
-		not_done = Score.objects.filter(user=user, score=0).count()
-		really_bad = Score.objects.filter(user=user, score=1).count()
-		bad = Score.objects.filter(user=user, score=2).count()
-		mistake = Score.objects.filter(user=user, score=3).count()
-		good = Score.objects.filter(user=user, score=4).count()
-		great = Score.objects.filter(user=user, score=5).count()
-		return [('not done',not_done),('really bad',really_bad),('bad',bad),('mistake',mistake),('good',good),('great',great)]
+		for score in rows:
+			score_vector = []
+			for level in columns:
+				count = Score.objects.filter(user=user, score=score[1], problem__level=level).count()
+				score_vector.append(count)
+			scores.append((score[0],score_vector))
+		# not_done = Score.objects.filter(user=user, score=0).count()
+		# really_bad = Score.objects.filter(user=user, score=1).count()
+		# bad = Score.objects.filter(user=user, score=2).count()
+		# mistake = Score.objects.filter(user=user, score=3).count()
+		# good = Score.objects.filter(user=user, score=4).count()
+		# great = Score.objects.filter(user=user, score=5).count()
+		return scores
 	else:
 		return []
 
-# Create your views here.
 def populate(request):
 	Exam.objects.all().delete()
 	Problem.objects.all().delete()
@@ -228,6 +261,6 @@ def populate(request):
 	problems = Problem.objects.all()
 	for user in users:
 		for problem in problems:
-			score = Score(user=new_user,problem=problem,score=0)
+			score = Score(user=user,problem=problem,score=0)
 			score.save()
 	return redirect(index)

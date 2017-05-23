@@ -27,7 +27,7 @@
 			<div class="container-problem-list">
 			<p>Your problems:</p>
 				{% for problem in problems %}
-					<a class="btn btn-info" href="{% url 'problem' pk=problem.pk%}">{{problem.exam.name}}<br>{{problem.level}}{{problem.problem}}</a>
+					<a class="button" href="{% url 'problem' pk=problem.pk%}">{{problem.exam.name}}<br>{{problem.level}}{{problem.problem}}</a>
 				{% endfor %}
 			</div> <!-- end of problem list -->
 		

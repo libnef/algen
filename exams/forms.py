@@ -18,7 +18,7 @@ class ProblemForm(forms.Form):
 	 	choices=LEVEL_CHOICES, 
 	 	widget=forms.CheckboxSelectMultiple,)
 	exam_years = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=YEAR_CHOICES)
-	include_assignments_of_score = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=DONE_CHOICE)
+	include_assignments_of_score = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=DONE_CHOICE, required=False)
 	if(Tag.objects.all().count() != 0):
 		tags = Tag.objects.all().values('tag')
 		tags = list(set([(t['tag'],t['tag']) for t in tags]))

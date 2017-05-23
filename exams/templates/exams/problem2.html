@@ -1,0 +1,202 @@
+{% extends "exams/base.html" %}
+{% load staticfiles%}
+
+{% block html-head%}
+	<script src="{% static 'js/jquery.script.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'css/problem.css' %}">
+{% endblock %}
+
+{% block sub-header %}
+	<a class="last" href="{% url 'problem' pk=last_problem.pk%}">
+		<span class="glyphicon glyphicon-chevron-left"></span>last
+	</a>
+	<a class="next" href="{% url 'problem' pk=next_problem.pk%}">
+		next<span class="glyphicon glyphicon-chevron-right"></span>
+	</a>
+{% endblock %}
+				
+{% block sidebar-button %}	
+	<a href="javascript:void(0)" onclick="openNav()">&#9776;</a>
+{% endblock %}
+
+{% block content %}
+<div class="container-problem-info">
+	<div class="container-problem-info-text">
+		<div><span style="font-weight: bold;">Exam:</span> {{problem.exam.name}}</div>
+		
+		<div><span style="font-weight: bold;">Problem:</span> {{problem.level}}{{problem.problem}}</div>
+		
+		<div><span style="font-weight: bold;">Problem tags:</span> 
+		{% if tags %}
+			{% for tag in tags %}
+				{{tag}},
+			{% endfor %}
+		{% else %}
+			No tags
+		{% endif %}
+
+		</div>
+	</div>
+	<div class="problem-info-score">
+		<div style="font-weight: bold;">Current score:</div>{{current_score}}
+	</div>
+</div> <!-- end of problem info -->
+
+<div class="container-problem">
+
+	<div class="tab">
+		<button class="tablinks" onclick="openTab(event, 'Problem')" id="defaultOpen">Problem</button>
+		<button class="tablinks" onclick="openTab(event, 'Solution')">Solution</button>
+		<button class="tablinks" onclick="openTab(event, 'Student-solutions')">Student solutions</button>
+		<button class="tablinks" onclick="openTab(event, 'Comments')">Comments</button>
+	</div>
+
+	<div id="Problem" class="tabcontent">
+		<img src="{% static problem_file %}">
+	</div>
+
+	<div id="Solution" class="tabcontent">
+		{% for solution_file in solution_files %}
+			<img src="{% static solution_file %}"><hr>
+		{% endfor %}
+	</div>
+
+	<div id="Student-solutions" class="tabcontent">
+		Use the side bar (top right corner) to add your solution.<hr/>
+		{% if home_solutions %}
+			{% for home_solution in home_solutions %}
+			 Solution {{forloop.counter }} 
+			 <div class="enlarge-text"></div><br>
+				<div class="solution_file solution_file-unclicked">
+					<img src='{{MEDIA_URL}}{{home_solution.picture}}'>
+				</div>
+				<hr/>
+			{% endfor %}
+		{% else %}
+			No solutions for this problem made yet
+		{% endif %}
+	</div>
+
+	<div id="Comments" class="tabcontent">
+		{% if user.is_authenticated %}
+		<form method='post'>
+			{% csrf_token %}
+			Write a comment:<br>
+			{{ comment_form.write_a_comment }}
+			<input class="submit-button" type='submit' value='submit'>
+		</form>
+		{% else %}
+			Log in to make a comment
+		{% endif %}
+		<hr/>
+		{% if comments %}
+			{% for comment in comments %}
+				<div style="font-weight: bold;">{{comment.author}}</div>
+				{{comment.comment}}<hr/>
+			{% endfor %}
+		{% else %}
+			No comments made for this problem
+		{% endif %}
+	</div>
+</div> <!-- end of problem -->
+{% endblock %}
+
+{% block score-matrix %}{% endblock %}
+
+
+{% block sidebar%}
+<div class="container-inner-page-col-2" id="mySidebar">
+	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
+		<!-- Close --> &times;
+	</a>
+	<div class="column-2-element">
+		<form method='post'>
+			{% csrf_token %}
+			{{ tag_form.as_p }}
+			<input class="submit-button" type='submit' value='submit'>
+		</form>
+	</div>
+	<div class="column-2-element">
+		<hr>
+		{% if user.is_authenticated %}
+		<form method='post'>
+			{% csrf_token %}
+			{{ form.as_p }}
+			<input class="submit-button" type='submit' value='submit'>
+		</form>
+		{% else %}
+			Log in to rate your solution.
+		{% endif %}
+	</div>
+	<div class="column-2-element">
+		<hr>
+		Upload your own solution image-file:
+		<form method='post' enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ solution_form.as_p }}
+			<input class="submit-button" type='submit' value='submit'>
+		</form>
+	</div>
+</div> <!-- end of second column -->
+{% endblock %}
+
+
+{% block script%}
+<script>
+
+if ( $(window).width() > 739) {      
+  //Add your javascript for large screens here 
+/* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+	function openNav() {
+	    document.getElementById("mySidebar").style.width = "280px";
+	    document.getElementById("main").style.marginRight = "280px";
+	}
+
+	/* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+	function closeNav() {
+	    document.getElementById("mySidebar").style.width = "0";
+	    document.getElementById("main").style.marginRight = "0";
+	}
+
+	$('.enlarge-text').text('(click to enlarge)');
+} else {
+  //Add your javascript for small screens here 
+	/* Set the width of the side navigation to 250px */
+	function openNav() {
+	    document.getElementById("mySidebar").style.width = "250px";
+	}
+
+	/* Set the width of the side navigation to 0 */
+	function closeNav() {
+	    document.getElementById("mySidebar").style.width = "0";
+	}
+  
+}
+
+
+function openTab(evt, tabName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+
+$('.solution_file').click(function() {
+	$(this).toggleClass('solution_file-unclicked solution_file-clicked');
+});
+</script>
+{% endblock %}

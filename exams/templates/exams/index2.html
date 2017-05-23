@@ -1,0 +1,30 @@
+{% extends "exams/base.html" %}
+{% load staticfiles%}
+
+{% block html-head%}
+	<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block sub-header %}
+	{% if user.is_authenticated %}
+		<div class="welcome-message">
+			Welcome {{ user.username }}
+		</div>
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+		<p>Pick an exam or search for a specific set of problems</p>
+		<div class="exam-container">
+		{% for exam in exams %}
+			<a href="{% url 'exam' date=exam.name %}">
+			{{exam.date|date:"m - d - y"}}</a>
+		{% endfor %}
+		</div>
+		<div class="search">
+			<a href="{% url 'advanced_search' %}">
+				<span class="glyphicon glyphicon-search"></span>
+			</a>
+		</div>
+
+{% endblock %}

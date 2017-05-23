@@ -1,11 +1,11 @@
-{% load staticfiles %}
-<html>
+{% extends "exams/base.html" %}
+{% load staticfiles%}
 
-	<head>
-		    <meta name="viewport" content="width=device-width, initial-scale=1">
-	        <link rel="stylesheet" href="{% static 'css/login.css' %}">
-	</head>
-<body>
+{% block html-head%}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
 {% if form.errors %}
 	<p>Please try again.</p>
 {% else %}
@@ -26,5 +26,6 @@
 </table>
 <input type="submit" value="Login" />
 </form>
-</body>
-</html>
+{% endblock %}
+
+{% block score-matrix %}{% endblock %}

@@ -1,13 +1,15 @@
-{% load staticfiles %}
-<html>
-<head>
+{% extends "exams/base.html" %}
+{% load staticfiles%}
+
+{% block html-head%}
     <link rel="stylesheet" href="{% static 'css/create_user.css' %}">
-</head>
-<body>
-	<h1>New user</h1>
+{% endblock %}
+
+{% block content %}
 	<form method="POST" class="post-form">{% csrf_token %}
 	    {{ form.as_p }}
 	    <button type="submit" class="save btn btn-default">Create new user account</button>
 	</form>
-</body>
-</html>
+{% endblock %}
+
+{% block score-matrix %}{% endblock %}

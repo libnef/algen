@@ -1,0 +1,167 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial Narrow", Arial, sans-serif;
+  box-sizing: content-box;
+  background-color: #1e130c !important;
+  line-height: 1.5;
+}
+
+p, td{
+  color:#9a8478;
+  font-size: 15px;
+}
+
+table{
+  width: 50%;
+}
+tbody > tr > td{
+  width: 150px;
+}
+
+.login-out-container p{
+  white-space: nowrap;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+a {
+  color:#9a8478;
+  text-decoration: none !important;
+}
+
+a:hover {
+  color:#b29d92;
+}
+
+a:focus {
+  color:#b29d92;
+}
+
+.outer-container {
+  display: flex;
+  background-color: #1e130c
+}
+
+.base-column {
+  display: flex;
+  flex-direction: column;
+  order: 1;
+  background-color: #efecea;
+  flex-basis: 1;
+  flex-grow: 1;
+  min-width: 400px;
+}
+
+.container-header {
+  display: flex;
+  flex-direction: row;
+  background-color: #1e130c;
+}
+
+.container-home {
+  display: flex;
+  order: 1;
+  flex-basis: 5%;
+  /* following code aligns center horizontally*/
+  justify-content: center;
+  align-items: center;
+}
+
+.home {
+  font-size: 200%;
+}
+
+.center-container{
+	flex-grow:1;
+	order: 2;
+}
+
+.problem-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.login-out-container{
+  order:3;
+  flex-basis: content;
+  flex-direction: column;
+  align-self: center;
+} 
+
+.sidebar-button {
+  order:4;
+  flex-direction: column;
+  display: flex;
+  flex-basis: 10%;
+  justify-content: center;
+  align-content: center;
+}
+
+.sidebar-button a {
+  font-size: 200%;
+  color:#9a8478;
+  text-decoration: none !important;
+  align-self: center;
+}
+
+.sidebar-button a:hover {
+  color:#b29d92;
+}
+
+.siderbar-button a:focus {
+  color:#b29d92;
+}
+
+.button{
+  text-align: center;
+  flex-grow: 0;
+  margin: 0.5%;
+  padding: 10px 3px 10px  3px;
+  border-radius: 50px;
+  font-size: 75%;
+  border-color: #1e130c;
+  background: linear-gradient(0deg, #1e130c, 50%, #504037);
+  font-family: "Arial Narrow", Arial, sans-serif;
+  line-height: 1em;
+  color: #DAD6D4;
+}
+
+.button-current {
+  background: linear-gradient(0deg, #2F221A, 50%, #61534b);
+}
+
+
+.button:hover{
+  color: #DAD6D4;
+  background: linear-gradient(0deg, #2F221A, 50%, #61534b);
+}
+
+.button-current:hover {
+  background: linear-gradient(0deg, #3d2e24, 50%, #706159);
+}
+
+
+.welcome-message {
+  font-family: "Arial Narrow", Arial, sans-serif;
+  margin-left: 20px;  
+  color: #DAD6D4;
+  font-weight: bold;
+}
+
+.sub-header {
+  min-height: 1.5em;
+  display: flex;
+  background: linear-gradient(to right, #efecea , #1E130C 20%);
+  justify-content: space-between;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-width: 700px) {
+    .container-home {
+        flex-basis: content;
+    }
+}

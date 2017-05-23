@@ -1,0 +1,104 @@
+{% load staticfiles %}
+<html>
+
+<head>
+	<!-- standard imports -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <!-- page specific imports -->
+    {% block html-head%}
+    {% endblock %}
+</head>
+
+<body>
+
+<div class="outer-container">
+
+	<div class="base-column" id="main">
+
+		<div class="container-header">
+	
+			<!-- the home icon in the top left -->
+			<div class="container-home">
+				<div class="home">
+					<a href="{% url 'index'%}">
+						<span class="glyphicon glyphicon-home"></span>
+					</a>
+				</div>
+			</div> <!-- end of home icon -->
+
+			<div class="center-container">	
+				<div class="problem-container">
+					{% if problems %}
+						<p><b>current problems:</b></p>
+						{% for problem in problems %}
+								<a class='button {% if problem.pk|stringformat:"s" == request.session.current_pk|stringformat:"s" %} button-current{% endif %}' href="{% url 'problem' pk=problem.pk%}">
+							{{problem.exam.name}}<br>
+							{{problem.level}}{{problem.problem}}</a>
+						{% endfor %}
+				</div>
+				<div>
+				{% else %}
+					<p>A database of previous exams for SF1624</p>
+				{% endif %}
+				</div>
+			</div>
+
+			<div class="login-out-container">
+				{% if user.is_authenticated %}
+					<p><b><a href="{% url 'logout' %}">logout</b></p></a>
+				{% else %}
+					<p><b><a href="{% url 'create_user' %}">create user</b></p></a>
+					<p><b><a href="{% url 'login' %}">login</b></p></a>
+				{% endif %}
+			</div>
+			<div class="sidebar-button">
+				{% block sidebar-button %}
+				{% endblock %}
+			</div>
+		</div>	
+		<div class="sub-header">
+			{% block sub-header %}
+			{% endblock %}
+		</div>
+		<div class="content">
+			{% block content %}
+			{% endblock %}
+
+			{% block score-matrix %}
+				{% if user.is_authenticated %}
+				<div>
+					<p>current scores:</p>
+
+					<table>
+						<tr>
+							<td>score</td>
+							<td>A</td>
+							<td>B</td>
+							<td>C</td>
+						</tr>
+						{% for score_name, score_vector in current_scores %}
+							<tr>
+								<td>{{score_name}}</td>
+								{% for score in score_vector %}
+									<td>{{score}}</td>
+								{% endfor %}
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+				{% endif %}
+			{% endblock %}
+		</div>
+	</div>
+		{% block sidebar%}
+		{% endblock %}
+</div>
+
+</body>
+
+</html>
+{% block script%}
+{% endblock %}

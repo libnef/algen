@@ -1,11 +1,7 @@
-*{
+.content {
 	background-color: #1e130c;
-	color: #DAD6D4;
 }
-
-p {
-	font-size: 150%;
-	margin: 2;
-	padding: 2;
-	font-family: "Arial Narrow", Arial, sans-serif;
+.content > *{
+	margin-left:1%;
+	margin-right:1%;
 }

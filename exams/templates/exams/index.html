@@ -32,9 +32,6 @@
 			<hr>
 			<div class="exam-container">
 			{% for exam in exams %}
-				<!-- {% if forloop.counter0|divisibleby:3 %} 
-					<br>
-				{% endif %} -->
 				<a href="{% url 'exam' date=exam.name %}" style="margin-left:20px;">{{exam.date|date:"m - d - y"}}</a>
 			{% endfor %}
 			</div>			
@@ -49,10 +46,10 @@
 			{% endfor %}
 			</table>
 
-<!-- 			<br><br></p>
+ 			<br><br></p>
 			{% if user.username == "Finbel" %}
 				<a href="{% url 'populate' %}">populate</a>
-			{% endif %} -->
+			{% endif %}
 		{% endif %}
 		</div>
 </html>
