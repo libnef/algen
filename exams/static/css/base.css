@@ -52,7 +52,6 @@ a:focus {
   background-color: #efecea;
   flex-basis: 1;
   flex-grow: 1;
-  min-width: 400px;
 }
 
 .container-header {
