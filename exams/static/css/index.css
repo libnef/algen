@@ -51,7 +51,6 @@ a:hover .glyphicon-search {
 .welcome-message {
 	color: #49392e;
 	margin-left: 15px;
-	font-weight: bold;
 }
 
 
@@ -59,6 +58,10 @@ a:hover .glyphicon-search {
 @media screen and (max-width: 700px) {
     .content p,td {
 		font-size: 100%;
+	}
+
+	.welcome-message{
+		margin-left: 0px;
 	}
 }
 

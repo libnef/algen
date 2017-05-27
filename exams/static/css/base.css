@@ -1,35 +1,19 @@
-* {
-  box-sizing: border-box;
+.container-fluid {
 }
+
 
 body {
   font-family: "Arial Narrow", Arial, sans-serif;
-  box-sizing: content-box;
-  background-color: #1e130c !important;
+  background-color: #1e130c;
   line-height: 1.5;
-}
-
-p, td{
   color:#9a8478;
-  font-size: 15px;
 }
 
-table{
-  width: 50%;
-}
-tbody > tr > td{
-  width: 150px;
-}
-
-.login-out-container p{
-  white-space: nowrap;
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
 
 a {
   color:#9a8478;
   text-decoration: none !important;
+  transition: 0.2s;
 }
 
 a:hover {
@@ -40,122 +24,76 @@ a:focus {
   color:#b29d92;
 }
 
-.outer-container {
+.header{
+  min-height:6.5%;
   display: flex;
-  background-color: #1e130c
+  justify-content: space-between;
+  align-items:center;
+  flex-wrap: wrap;
 }
 
-.base-column {
-  display: flex;
-  flex-direction: column;
-  order: 1;
-  background-color: #efecea;
-  flex-basis: 1;
-  flex-grow: 1;
-}
-
-.container-header {
-  display: flex;
-  flex-direction: row;
-  background-color: #1e130c;
-}
-
-.container-home {
-  display: flex;
-  order: 1;
-  flex-basis: 5%;
-  /* following code aligns center horizontally*/
-  justify-content: center;
-  align-items: center;
+.header p{
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .home {
+  display: flex;
+  justify-content: center;
   font-size: 200%;
 }
 
 .center-container{
-	flex-grow:1;
-	order: 2;
-}
-
-.problem-container {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
 }
 
-.login-out-container{
-  order:3;
+.account-container{
   flex-basis: content;
   flex-direction: column;
   align-self: center;
-} 
-
-.sidebar-button {
-  order:4;
-  flex-direction: column;
-  display: flex;
-  flex-basis: 10%;
-  justify-content: center;
-  align-content: center;
+  white-space: nowrap;
 }
 
-.sidebar-button a {
-  font-size: 200%;
-  color:#9a8478;
-  text-decoration: none !important;
-  align-self: center;
-}
-
-.sidebar-button a:hover {
-  color:#b29d92;
-}
-
-.siderbar-button a:focus {
-  color:#b29d92;
-}
-
-.button{
+.problem-button{
   text-align: center;
-  flex-grow: 0;
   margin: 0.5%;
-  padding: 10px 3px 10px  3px;
+  padding: 12px 4px 12px  4px;
   border-radius: 50px;
   font-size: 75%;
-  border-color: #1e130c;
-  background: linear-gradient(0deg, #1e130c, 50%, #504037);
-  font-family: "Arial Narrow", Arial, sans-serif;
   line-height: 1em;
+  background: linear-gradient(#504037, 30%, #1e130c);
   color: #DAD6D4;
+  top: 0px;
 }
 
-.button-current {
-  background: linear-gradient(0deg, #2F221A, 50%, #61534b);
+.current-problem-button {
+  background: linear-gradient(#504037, 70%, #1e130c);
 }
 
 
-.button:hover{
+.problem-button:hover{
   color: #DAD6D4;
-  background: linear-gradient(0deg, #2F221A, 50%, #61534b);
+  background: linear-gradient(#504037, 60%, #1e130c);
 }
 
-.button-current:hover {
-  background: linear-gradient(0deg, #3d2e24, 50%, #706159);
-}
-
-
-.welcome-message {
-  font-family: "Arial Narrow", Arial, sans-serif;
-  margin-left: 20px;  
-  color: #DAD6D4;
-  font-weight: bold;
+.current-problem-button:hover {
+  background: linear-gradient(#504037, 80%, #1e130c);
 }
 
 .sub-header {
   min-height: 1.5em;
   display: flex;
-  background: linear-gradient(to right, #efecea , #1E130C 20%);
+  background: linear-gradient(to right, #efecea , #1E130C 30%);
   justify-content: space-between;
+}
+
+table{
+  width: 50%;
+}
+tbody > tr > td{
+  width: 150px;
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
@@ -163,4 +101,8 @@ a:focus {
     .container-home {
         flex-basis: content;
     }
+    .sub-header{
+      background: linear-gradient(to right, #efecea , #1E130C 50%);
+    }
+
 }

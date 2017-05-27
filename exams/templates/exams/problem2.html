@@ -7,12 +7,18 @@
 {% endblock %}
 
 {% block sub-header %}
-	<a class="last" href="{% url 'problem' pk=last_problem.pk%}">
-		<span class="glyphicon glyphicon-chevron-left"></span>last
+	<div class="col-xs-2 last">
+	<a href="{% url 'problem' pk=last_problem.pk%}">
+		<span class="glyphicon glyphicon-chevron-left"></span><b>last</b>
 	</a>
-	<a class="next" href="{% url 'problem' pk=next_problem.pk%}">
+	</div>
+	<div class="col-xs-8">
+	</div>
+	<div class="col-xs-2 next">
+	<a href="{% url 'problem' pk=next_problem.pk%}">
 		next<span class="glyphicon glyphicon-chevron-right"></span>
 	</a>
+	</div>
 {% endblock %}
 				
 {% block sidebar-button %}	
@@ -20,13 +26,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-problem-info">
-	<div class="container-problem-info-text">
-		<div><span style="font-weight: bold;">Exam:</span> {{problem.exam.name}}</div>
+<div class="row container-problem-info">
+	<div class="col-md-3 col-xs-7 container-problem-info-text">
+		<div><b>Exam:</b> {{problem.exam.name}}</div>
 		
-		<div><span style="font-weight: bold;">Problem:</span> {{problem.level}}{{problem.problem}}</div>
+		<div><b>Problem:</b> {{problem.level}}{{problem.problem}}</div>
 		
-		<div><span style="font-weight: bold;">Problem tags:</span> 
+		<div><b>Problem tags:</b> 
 		{% if tags %}
 			{% for tag in tags %}
 				{{tag}},
@@ -37,31 +43,31 @@
 
 		</div>
 	</div>
-	<div class="problem-info-score">
-		<div style="font-weight: bold;">Current score:</div>{{current_score}}
+	<div class="col-md-9 col-xs-5 problem-info-score">
+		<b>Current score:</b> {{current_score}}
 	</div>
 </div> <!-- end of problem info -->
 
-<div class="container-problem">
-
-	<div class="tab">
-		<button class="tablinks" onclick="openTab(event, 'Problem')" id="defaultOpen">Problem</button>
-		<button class="tablinks" onclick="openTab(event, 'Solution')">Solution</button>
-		<button class="tablinks" onclick="openTab(event, 'Student-solutions')">Student solutions</button>
-		<button class="tablinks" onclick="openTab(event, 'Comments')">Comments</button>
+<!-- <div class="row container-problem">
+ -->
+	<div class="row tab">
+		<button class="col-md-1 col-xs-3 tablinks" onclick="openTab(event, 'Problem')" id="defaultOpen">Problem</button>
+		<button class="col-md-1 col-xs-3 tablinks" onclick="openTab(event, 'Solution')">Solution</button>
+		<button class="col-md-1 col-xs-3 tablinks" onclick="openTab(event, 'Student-solutions')">Student solutions</button>
+		<button class="col-md-1 col-xs-3 tablinks" onclick="openTab(event, 'Comments')">Comments</button>
 	</div>
 
-	<div id="Problem" class="tabcontent">
+	<div id="Problem" class="row tabcontent">
 		<img src="{% static problem_file %}">
 	</div>
 
-	<div id="Solution" class="tabcontent">
+	<div id="Solution" class="row tabcontent">
 		{% for solution_file in solution_files %}
 			<img src="{% static solution_file %}"><hr>
 		{% endfor %}
 	</div>
 
-	<div id="Student-solutions" class="tabcontent">
+	<div id="Student-solutions" class="row tabcontent">
 		Use the side bar (top right corner) to add your solution.<hr/>
 		{% if home_solutions %}
 			{% for home_solution in home_solutions %}
@@ -77,7 +83,7 @@
 		{% endif %}
 	</div>
 
-	<div id="Comments" class="tabcontent">
+	<div id="Comments" class="row tabcontent">
 		{% if user.is_authenticated %}
 		<form method='post'>
 			{% csrf_token %}
@@ -91,14 +97,14 @@
 		<hr/>
 		{% if comments %}
 			{% for comment in comments %}
-				<div style="font-weight: bold;">{{comment.author}}</div>
+				<b>{{comment.author}}</b>
 				{{comment.comment}}<hr/>
 			{% endfor %}
 		{% else %}
 			No comments made for this problem
 		{% endif %}
 	</div>
-</div> <!-- end of problem -->
+<!-- </div> end of problem -->
 {% endblock %}
 
 {% block score-matrix %}{% endblock %}

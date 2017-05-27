@@ -2,10 +2,12 @@
 <html>
 
 <head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<!-- standard imports -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <!-- page specific imports -->
     {% block html-head%}
@@ -14,62 +16,53 @@
 
 <body>
 
-<div class="outer-container">
-
-	<div class="base-column" id="main">
-
-		<div class="container-header">
-	
-			<!-- the home icon in the top left -->
-			<div class="container-home">
-				<div class="home">
+<div class="container-fluid" id="main">
+		<div class="row header">
+			<div class="col-md-1 col-xs-1 home">
 					<a href="{% url 'index'%}">
 						<span class="glyphicon glyphicon-home"></span>
 					</a>
-				</div>
 			</div> <!-- end of home icon -->
 
-			<div class="center-container">	
-				<div class="problem-container">
-					{% if problems %}
-						<p><b>current problems:</b></p>
-						{% for problem in problems %}
-								<a class='button {% if problem.pk|stringformat:"s" == request.session.current_pk|stringformat:"s" %} button-current{% endif %}' href="{% url 'problem' pk=problem.pk%}">
-							{{problem.exam.name}}<br>
-							{{problem.level}}{{problem.problem}}</a>
-						{% endfor %}
-				</div>
-				<div>
+			<div class="col-md-9 col-xs-11 center-container">	
+				{% if problems %}
+					<p>current problems:</p>
+					{% for problem in problems %}
+							<a class='problem-button {% if problem.pk|stringformat:"s" == request.session.current_pk|stringformat:"s" %}current-problem-button{% endif %}' href="{% url 'problem' pk=problem.pk%}">
+						{{problem.exam.name}}<br>
+						{{problem.level}}{{problem.problem}}</a>
+					{% endfor %}
 				{% else %}
 					<p>A database of previous exams for SF1624</p>
 				{% endif %}
-				</div>
-			</div>
-
-			<div class="login-out-container">
+			</div> <!-- end of center-container -->
+			
+			<div class="col-md-1 col-xs-9 account-container">
 				{% if user.is_authenticated %}
-					<p><b><a href="{% url 'logout' %}">logout</b></p></a>
+					<p><b><a href="{% url 'logout' %}">logout</a></b></p>
 				{% else %}
-					<p><b><a href="{% url 'create_user' %}">create user</b></p></a>
-					<p><b><a href="{% url 'login' %}">login</b></p></a>
+					<p><b><a href="{% url 'create_user' %}">create user</a></b></p>
+					<p><b><a href="{% url 'login' %}">login</a></b></p>
 				{% endif %}
-			</div>
-			<div class="sidebar-button">
+			</div> <!-- end of account-container -->
+
+			<div class="col-md-1 col-xs-3 sidebar-button">
 				{% block sidebar-button %}
 				{% endblock %}
-			</div>
-		</div>	
-		<div class="sub-header">
+			</div> <!-- end of sidebar-button -->
+		</div>	<!-- end of top-header -->
+		<div class="row sub-header">
 			{% block sub-header %}
 			{% endblock %}
-		</div>
-		<div class="content">
+		</div> <!-- end of sub-header -->
+		<div class="row">
+			<div class="col-xs-12 content">
 			{% block content %}
 			{% endblock %}
 
 			{% block score-matrix %}
+				<div class="row">
 				{% if user.is_authenticated %}
-				<div>
 					<p>current scores:</p>
 
 					<table>
@@ -88,13 +81,13 @@
 							</tr>
 						{% endfor %}
 					</table>
-				</div>
 				{% endif %}
+				</div>
 			{% endblock %}
+			</div>
 		</div>
-	</div>
-		{% block sidebar%}
-		{% endblock %}
+	{% block sidebar%}
+	{% endblock %}
 </div>
 
 </body>
